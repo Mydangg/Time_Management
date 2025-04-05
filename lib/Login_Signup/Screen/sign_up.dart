@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:time_management/Login_Signup/Screen/Home_screen.dart';
+import 'package:time_management/HomePage/splash_screen.dart';
+
 import 'package:time_management/Login_Signup/Screen/login.dart';
 import 'package:time_management/Login_Signup/Services/authentication.dart';
 import 'package:time_management/Login_Signup/Widget/snack_bar.dart';
@@ -41,7 +42,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           isLoading = true;
         });
         Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => const HomeScreen(),
+          builder: (context) => const SplashScreen(),
         ));
       } else {
         setState(() {

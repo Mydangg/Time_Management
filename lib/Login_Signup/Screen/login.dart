@@ -5,9 +5,11 @@ import 'package:time_management/Login_Signup/Widget/text_field.dart';
 import 'package:time_management/Login_with_Google/google_auth.dart';
 import 'package:time_management/Password_Forgot/forgot_password.dart';
 
+import 'package:time_management/HomePage/splash_screen.dart';
+
 import '../Services/authentication.dart';
 import '../Widget/snack_bar.dart';
-import 'home_screen.dart';
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -41,7 +43,7 @@ class _SignupScreenState extends State<LoginScreen>{
           isLoading = true;
         });
         Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => const HomeScreen(),
+          builder: (context) => const SplashScreen(),
         ));
       } else {
         setState(() {
@@ -153,7 +155,7 @@ class _SignupScreenState extends State<LoginScreen>{
                           await FirebaseServices().signInWithGoogle();
                           Navigator.pushReplacement(
                             context, MaterialPageRoute(
-                              builder: (context) => const HomeScreen(),
+                              builder: (context) => const SplashScreen(),
                             ),
                           );
                       }, 

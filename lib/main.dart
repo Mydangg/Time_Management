@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:time_management/Login_Signup/Screen/Home_screen.dart';
+import 'package:time_management/HomePage/splash_screen.dart';
 import 'package:time_management/Login_Signup/Screen/login.dart';
 void main() async{
  WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
      home: StreamBuilder(stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData){
-            return const HomeScreen();
+            return const SplashScreen();
           }
           else{
             return const LoginScreen();
