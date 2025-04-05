@@ -41,6 +41,7 @@ dependencies:
   firebase_auth: ^5.5.1
   contentful: ^3.0.5
   google_sign_in: ^6.3.0
+  animations: ^2.0.8
 
 dev_dependencies:
   flutter_test:
