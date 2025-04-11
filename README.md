@@ -10,8 +10,10 @@ This app allow users to:
 - View calendar and add, edit, delete schedules/tasks
 - Receive reminder notifications when it's time for a task
 - Display task priority levels
-- Show task completion status
-- Provide schedule statistics
+
+[//]: # (- Show task completion status)
+
+[//]: # (- Provide schedule statistics)
 
 | ID | Task                                | Members |
 |----|-------------------------------------|---------|
