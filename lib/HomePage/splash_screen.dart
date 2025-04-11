@@ -1,5 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import '../components/widgets.dart';
+import '../utils/color_palette.dart';
+import '../utils/font_sizes.dart';
 import 'home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -18,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
         context,
         PageRouteBuilder(
           transitionDuration: Duration(milliseconds: 800),
-          pageBuilder: (_, __, ___) => const HomePage(),
+          pageBuilder: (_, __, ___) => const TasksScreen(),
           transitionsBuilder: (_, animation, __, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
@@ -40,22 +43,21 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: Colors.blue[100],
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset("/images/logo.png", width: 150),
-            const SizedBox(height: 20),
-            Text(
-              "Hế lô hế lô hế lô",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.blue[900],
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset('assets/images/app_logo.png', width: 100,),
+              const SizedBox(height: 20,),
+              buildText('Everything Tasks', kWhiteColor, textBold,
+                  FontWeight.w600, TextAlign.center, TextOverflow.clip),
+              const SizedBox(
+                height: 10,
               ),
-            ),
-          ],
-        ),
-      ),
-    );
+              buildText('Schedule your week with ease', kWhiteColor, textTiny,
+                  FontWeight.normal, TextAlign.center, TextOverflow.clip),
+            ],
+          )));
+
   }
 }
