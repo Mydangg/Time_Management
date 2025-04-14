@@ -22,8 +22,17 @@ class UpdateTaskScreen extends StatefulWidget {
 }
 
 class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
+
   TextEditingController title = TextEditingController();
   TextEditingController description = TextEditingController();
+  String _selectedPriority = '';
+  String _selectedRepeat = '';
+  String _createBy= '';
+  String _createById= '';
+  TimeOfDay _startTime = TimeOfDay.now();
+  TimeOfDay _endTime = TimeOfDay.now();
+  bool _isCompleted = false;
+
 
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
@@ -49,12 +58,36 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
 
   @override
   void initState() {
+    super.initState();
     title.text = widget.taskModel.title;
     description.text = widget.taskModel.description;
     _selectedDay = _focusedDay;
     _rangeStart = widget.taskModel.startDateTime;
     _rangeEnd = widget.taskModel.stopDateTime;
-    super.initState();
+
+    // Các trường mới
+    _selectedPriority = widget.taskModel.priority ?? '';
+    _selectedRepeat = widget.taskModel.repeat ?? '';
+    _isCompleted = widget.taskModel.completed ?? false;
+    _startTime = widget.taskModel.startTime!;
+    _endTime = widget.taskModel.endTime!;
+
+  }
+
+  Future<void> _pickTime({required bool isStart}) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    if (picked != null) {
+      setState(() {
+        if (isStart) {
+          _startTime = picked;
+        } else {
+          _endTime = picked;
+        }
+      });
+    }
   }
 
   @override
@@ -151,6 +184,157 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
                           const SizedBox(
                             height: 20,
                           ),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              // Dropdown for Priority
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 10), // Khoảng cách giữa 2 dropdowns
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      buildText(
+                                        'Priority',
+                                        kBlackColor,
+                                        textMedium,
+                                        FontWeight.bold,
+                                        TextAlign.start,
+                                        TextOverflow.clip,
+                                      ),
+                                      PopupMenuButton<int>(
+                                        onSelected: (value) {
+                                          setState(() {
+                                            _selectedPriority = value == 0 ? 'Normal' : 'Important';
+                                          });
+                                        },
+                                        itemBuilder: (BuildContext context) => [
+                                          PopupMenuItem<int>(
+                                            value: 0,
+                                            child: Text('Normal'),
+                                          ),
+                                          PopupMenuItem<int>(
+                                            value: 1,
+                                            child: Text('Important'),
+                                          ),
+                                        ],
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(5),
+                                            border: Border.all(color: Colors.grey),
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                _selectedPriority.isEmpty ? 'Select Priority' : _selectedPriority,
+                                                style: TextStyle(fontSize: 14, color: Colors.black),
+                                              ),
+                                              Icon(Icons.arrow_drop_down),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              // Dropdown for Repeat
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 10), // Khoảng cách giữa 2 dropdowns
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      buildText(
+                                        'Repeat',
+                                        kBlackColor,
+                                        textMedium,
+                                        FontWeight.bold,
+                                        TextAlign.start,
+                                        TextOverflow.clip,
+                                      ),
+                                      PopupMenuButton<int>(
+                                        onSelected: (value) {
+                                          setState(() {
+                                            if(value ==0)
+                                            {
+                                              _selectedRepeat = 'None';
+                                            }
+                                            else if(value ==1)
+                                            {
+                                              _selectedRepeat= 'Daily';
+                                            }
+                                            else
+                                              _selectedRepeat= 'Wekkly';
+                                          });
+                                        },
+                                        itemBuilder: (BuildContext context) => [
+                                          PopupMenuItem<int>(
+                                            value: 0,
+                                            child: Text('None'),
+                                          ),
+                                          PopupMenuItem<int>(
+                                            value: 1,
+                                            child: Text('Daily'),
+                                          ),
+                                          PopupMenuItem<int>(
+                                            value: 2,
+                                            child: Text('Weekly'),
+                                          ),
+                                        ],
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(5),
+                                            border: Border.all(color: Colors.grey),
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                _selectedRepeat.isEmpty ? 'Select Repeat' : _selectedRepeat,
+                                                style: TextStyle(fontSize: 14, color: Colors.black),
+                                              ),
+                                              Icon(Icons.arrow_drop_down),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Start time: ${_startTime?.format(context) ?? 'Choose'}'),
+                              ElevatedButton(
+                                onPressed: () => _pickTime(isStart: true),
+                                child: Text('Choose'),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('EndTime: ${_endTime?.format(context) ?? 'Choose'}'),
+                              ElevatedButton(
+                                onPressed: () => _pickTime(isStart: false),
+                                child: Text('Choose'),
+                              ),
+                            ],
+                          ),
+
+
+
                           buildText(
                               'Description',
                               kBlackColor,
@@ -193,8 +377,11 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
                                       description: description.text,
                                       completed: widget.taskModel.completed,
                                       priority: widget.taskModel.priority,
+                                      repeat: widget.taskModel.repeat,
                                       createBy: widget.taskModel.createBy,
                                       createById: widget.taskModel.createById,
+                                      startTime: _startTime ?? TimeOfDay.now(),
+                                      endTime: _endTime ?? TimeOfDay.now(),
                                       startDateTime: _rangeStart,
                                       stopDateTime: _rangeEnd);
                                   context.read<TasksBloc>().add(

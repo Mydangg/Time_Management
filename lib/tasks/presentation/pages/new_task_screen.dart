@@ -26,11 +26,12 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
 
   TextEditingController title = TextEditingController();
   TextEditingController description = TextEditingController();
-  List<bool> _priorityChecked = [false, false];
   String _selectedPriority = '';
+  String _selectedRepeat = '';
   String _createBy= '';
   String _createById= '';
-
+  TimeOfDay _startTime = TimeOfDay.now();
+  TimeOfDay _endTime = TimeOfDay.now();
 
 
   CalendarFormat _calendarFormat = CalendarFormat.month;
@@ -40,20 +41,37 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
   DateTime? _rangeEnd;
 
 
-  // Bien luu gi tri muc do
-
   @override
   void initState() {
     _selectedDay = _focusedDay;
     super.initState();
   }
+  Future<void> _pickTime({required bool isStart}) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    if (picked != null) {
+      setState(() {
+        if (isStart) {
+          _startTime = picked;
+        } else {
+          _endTime = picked;
+        }
+      });
+    }
+  }
+
 
   _onRangeSelected(DateTime? start, DateTime? end, DateTime focusDay) {
     setState(() {
       _selectedDay = null;
       _focusedDay = focusDay;
+
+      // Nếu end == null => gán end = start (trường hợp chọn cùng 1 ngày)
       _rangeStart = start;
-      _rangeEnd = end;
+      _rangeEnd = end ?? start;
+
     });
   }
 
@@ -80,8 +98,10 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                             getSnackBar(state.error, kRed));
                       }
                       if (state is AddTasksSuccess) {
-                        Navigator.pop(context);
+                        Navigator.pushReplacementNamed(context, '/list_task');
+                        // Navigator.pop(context);
                       }
+
                     }, builder: (context, state) {
                       return ListView(
                         children: [
@@ -141,6 +161,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                           const SizedBox(
                             height: 10,
                           ),
+
                           BuildTextField(
                               hint: "Task Title",
                               controller: title,
@@ -150,45 +171,158 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                           const SizedBox(
                             height: 20,
                           ),
-                          buildText(
-                              'Priority',
-                              kBlackColor,
-                              textMedium,
-                              FontWeight.bold,
-                              TextAlign.start,
-                              TextOverflow.clip
-                          ),
-                          Column(
+                          const Divider(color: kGrey3),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              CheckboxListTile(
-                                title: Text('Normal'),
-                                value: _priorityChecked[0],
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    _priorityChecked[0] = value!;
-                                    if (_priorityChecked[0]) {
-                                      _selectedPriority = 'Normal';
-                                      _priorityChecked[1] = false; // Uncheck 'Important'
-                                    }
-                                  });
-                                },
+                              // Dropdown for Priority
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 10), // Khoảng cách giữa 2 dropdowns
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      buildText(
+                                        'Priority',
+                                        kBlackColor,
+                                        textMedium,
+                                        FontWeight.bold,
+                                        TextAlign.start,
+                                        TextOverflow.clip,
+                                      ),
+                                      PopupMenuButton<int>(
+                                        onSelected: (value) {
+                                          setState(() {
+                                            _selectedPriority = value == 0 ? 'Normal' : 'Important';
+                                          });
+                                        },
+                                        itemBuilder: (BuildContext context) => [
+                                          PopupMenuItem<int>(
+                                            value: 0,
+                                            child: Text('Normal'),
+                                          ),
+                                          PopupMenuItem<int>(
+                                            value: 1,
+                                            child: Text('Important'),
+                                          ),
+                                        ],
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(5),
+                                            border: Border.all(color: Colors.grey),
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                _selectedPriority.isEmpty ? 'Select Priority' : _selectedPriority,
+                                                style: TextStyle(fontSize: 14, color: Colors.black),
+                                              ),
+                                              Icon(Icons.arrow_drop_down),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
-                              CheckboxListTile(
-                                title: Text('Important'),
-                                value: _priorityChecked[1],
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    _priorityChecked[1] = value!;
-                                    if (_priorityChecked[1]) {
-                                      _selectedPriority = 'Important';
-                                      _priorityChecked[0] = false; // Uncheck 'Normal'
-                                    }
-                                  });
-                                },
+                              // Dropdown for Repeat
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 10), // Khoảng cách giữa 2 dropdowns
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      buildText(
+                                        'Repeat',
+                                        kBlackColor,
+                                        textMedium,
+                                        FontWeight.bold,
+                                        TextAlign.start,
+                                        TextOverflow.clip,
+                                      ),
+                                      PopupMenuButton<int>(
+                                        onSelected: (value) {
+                                          setState(() {
+                                            if(value ==0)
+                                              {
+                                                _selectedRepeat = 'None';
+                                              }
+                                            else if(value ==1)
+                                              {
+                                                _selectedRepeat= 'Daily';
+                                              }
+                                            else
+                                              _selectedRepeat= 'Wekkly';
+                                          });
+                                        },
+                                        itemBuilder: (BuildContext context) => [
+                                          PopupMenuItem<int>(
+                                            value: 0,
+                                            child: Text('None'),
+                                          ),
+                                          PopupMenuItem<int>(
+                                            value: 1,
+                                            child: Text('Daily'),
+                                          ),
+                                          PopupMenuItem<int>(
+                                            value: 2,
+                                            child: Text('Weekly'),
+                                          ),
+                                        ],
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(5),
+                                            border: Border.all(color: Colors.grey),
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                _selectedRepeat.isEmpty ? 'Select Repeat' : _selectedRepeat,
+                                                style: TextStyle(fontSize: 14, color: Colors.black),
+                                              ),
+                                              Icon(Icons.arrow_drop_down),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
                             ],
                           ),
+                          const Divider(color: kGrey3),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Start time: ${_startTime?.format(context) ?? 'Choose'}'),
+                              ElevatedButton(
+                                onPressed: () => _pickTime(isStart: true),
+                                child: Text('Choose'),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 10),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('EndTime: ${_endTime?.format(context) ?? 'Choose'}'),
+                              ElevatedButton(
+                                onPressed: () => _pickTime(isStart: false),
+                                child: Text('Choose'),
+                              ),
+                            ],
+                          ),
+
+
                           const SizedBox(height: 20),
+                          const Divider(color: kGrey3),
                           buildText(
                               'Description',
                               kBlackColor,
@@ -199,6 +333,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                           const SizedBox(
                             height: 10,
                           ),
+
                           BuildTextField(
                               hint: "Task Description",
                               controller: description,
@@ -263,18 +398,44 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                                       final String taskId = DateTime.now()
                                           .millisecondsSinceEpoch
                                           .toString();
+
+                                      bool isStartTimeValid = _startTime.hour > _focusedDay.hour ||
+                                          (_startTime.hour == _focusedDay.hour && _startTime.minute > _focusedDay.minute);
+
+                                      bool isEndTimeValid = _endTime.hour > _startTime.hour ||
+                                          (_endTime.hour == _startTime.hour && _endTime.minute > _startTime.minute);
+
+                                      if (!isStartTimeValid) {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          getSnackBar('Start time must be greater than Present time', Colors.red),
+                                        );
+                                        return;
+                                      }
+
+                                      if (!isEndTimeValid) {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          getSnackBar('End time must be greater than Start time', Colors.red),
+                                        );
+                                        return;
+                                      }
+
                                       var taskModel = TaskModel(
                                           id: taskId,
                                           title: title.text,
                                           description: description.text,
                                           priority: _selectedPriority,
+                                          repeat: _selectedRepeat,
                                           createBy: _createBy,
                                           createById: _createById,
                                           startDateTime: _rangeStart,
-                                          stopDateTime: _rangeEnd);
+                                          stopDateTime: _rangeEnd,
+                                          startTime: _startTime,
+                                          endTime: _endTime,
+                                      );
                                       context.read<TasksBloc>().add(
                                           AddNewTaskEvent(
                                               taskModel: taskModel));
+
                                     },
                                     child: Padding(
                                       padding: const EdgeInsets.all(15),
@@ -291,6 +452,10 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                           )
                         ],
                       );
-                    })))));
+                    }
+                    )
+                )
+            )
+        ));
   }
 }

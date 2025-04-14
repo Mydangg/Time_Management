@@ -9,7 +9,12 @@ class TaskDataProvider {
 
   Future<List<TaskModel>> getTasks() async {
     try {
-      final snapshot = await _firestore.collection('tasks').get();
+      final user = FirebaseAuth.instance.currentUser;
+      // final snapshot = await _firestore.collection('tasks').get();
+      final snapshot = await _firestore
+          .collection('tasks')
+          .where('createById', isEqualTo: user?.uid) // Lọc theo UID người tạo
+          .get();
       tasks = snapshot.docs.map((doc) {
         return TaskModel.fromJson(doc.data(), doc.id); // 👈 truyền ID đúng từ Firestore
       }).toList();
@@ -90,6 +95,8 @@ class TaskDataProvider {
       throw Exception(handleException(exception));
     }
   }
+
+
 
 
   Future<List<TaskModel>> updateTask(TaskModel taskModel) async {

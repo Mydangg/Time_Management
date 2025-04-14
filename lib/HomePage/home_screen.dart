@@ -58,113 +58,75 @@ class _TasksScreenState extends State<TasksScreen> {
             child: Scaffold(
               backgroundColor: kWhiteColor,
               appBar: CustomAppBar(
-                title: 'Hi ${username ?? '' }',
+                title: 'Hi ${username ?? ''}',
                 showBackArrow: false,
                 actionWidgets: [
-                  PopupMenuButton<int>(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    elevation: 1,
-                    onSelected: (value) {
-                      switch (value) {
-                        case 0:
-                          {
-                            context
-                                .read<TasksBloc>()
-                                .add(SortTaskEvent(sortOption: 0));
+                  Padding(
+                    padding: const EdgeInsets.only(right: 16.0), // Đảm bảo có khoảng cách hợp lý
+                    child: PopupMenuButton<int>(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      elevation: 1,
+                      onSelected: (value) {
+                        switch (value) {
+                          case 0:
+                            context.read<TasksBloc>().add(SortTaskEvent(sortOption: 0));
                             break;
-                          }
-                        case 1:
-                          {
-                            context
-                                .read<TasksBloc>()
-                                .add(SortTaskEvent(sortOption: 1));
+                          case 1:
+                            context.read<TasksBloc>().add(SortTaskEvent(sortOption: 1));
                             break;
-                          }
-                        case 2:
-                          {
-                            context
-                                .read<TasksBloc>()
-                                .add(SortTaskEvent(sortOption: 2));
+                          case 2:
+                            context.read<TasksBloc>().add(SortTaskEvent(sortOption: 2));
                             break;
-                          }
-                      }
-                    },
-                    itemBuilder: (BuildContext context) {
-                      return [
-                        PopupMenuItem<int>(
-                          value: 0,
-                          child: Row(
-                            children: [
-                              SvgPicture.asset(
-                                'assets/svgs/calender.svg',
-                                width: 15,
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              buildText(
-                                  'Sort by date',
-                                  kBlackColor,
-                                  textSmall,
-                                  FontWeight.normal,
-                                  TextAlign.start,
-                                  TextOverflow.clip)
-                            ],
+                        }
+                      },
+                      itemBuilder: (BuildContext context) {
+                        return [
+                          PopupMenuItem<int>(
+                            value: 0,
+                            child: Row(
+                              children: [
+                                SvgPicture.asset('assets/svgs/calender.svg', width: 15),
+                                const SizedBox(width: 10),
+                                buildText('Sort by date', kBlackColor, textSmall,
+                                    FontWeight.normal, TextAlign.start, TextOverflow.clip),
+                              ],
+                            ),
                           ),
-                        ),
-                        PopupMenuItem<int>(
-                          value: 1,
-                          child: Row(
-                            children: [
-                              SvgPicture.asset(
-                                'assets/svgs/task_checked.svg',
-                                width: 15,
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              buildText(
-                                  'Completed tasks',
-                                  kBlackColor,
-                                  textSmall,
-                                  FontWeight.normal,
-                                  TextAlign.start,
-                                  TextOverflow.clip)
-                            ],
+                          PopupMenuItem<int>(
+                            value: 1,
+                            child: Row(
+                              children: [
+                                SvgPicture.asset('assets/svgs/task_checked.svg', width: 15),
+                                const SizedBox(width: 10),
+                                buildText('Completed tasks', kBlackColor, textSmall,
+                                    FontWeight.normal, TextAlign.start, TextOverflow.clip),
+                              ],
+                            ),
                           ),
-                        ),
-                        PopupMenuItem<int>(
-                          value: 2,
-                          child: Row(
-                            children: [
-                              SvgPicture.asset(
-                                'assets/svgs/task.svg',
-                                width: 15,
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              buildText(
-                                  'Pending tasks',
-                                  kBlackColor,
-                                  textSmall,
-                                  FontWeight.normal,
-                                  TextAlign.start,
-                                  TextOverflow.clip)
-                            ],
+                          PopupMenuItem<int>(
+                            value: 2,
+                            child: Row(
+                              children: [
+                                SvgPicture.asset('assets/svgs/task.svg', width: 15),
+                                const SizedBox(width: 10),
+                                buildText('Pending tasks', kBlackColor, textSmall,
+                                    FontWeight.normal, TextAlign.start, TextOverflow.clip),
+                              ],
+                            ),
                           ),
-                        ),
-                      ];
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 20),
-                      child: SvgPicture.asset('assets/svgs/filter.svg'),
+                        ];
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 20),
+                        child: SvgPicture.asset('assets/svgs/filter.svg'),
+                      ),
                     ),
                   ),
                 ],
               ),
+
               body: GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () => FocusScope.of(context).unfocus(),
