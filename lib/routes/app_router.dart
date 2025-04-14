@@ -4,8 +4,11 @@ import 'package:time_management/splash_screen.dart';
 import 'package:time_management/tasks/data/local/model/task_model.dart';
 import 'package:time_management/tasks/presentation/pages/new_task_screen.dart';
 import 'package:time_management/tasks/presentation/pages/update_task_screen.dart';
+import 'package:time_management/tasks/presentation/widget/task_item_view.dart';
 
 import '../page_not_found.dart';
+import '../tasks/presentation/pages/task_list.dart';
+
 
 Route onGenerateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
@@ -20,6 +23,10 @@ Route onGenerateRoute(RouteSettings routeSettings) {
     case Pages.createNewTask:
       return MaterialPageRoute(
         builder: (context) => const NewTaskScreen(),
+      );
+    case Pages.list_task:
+      return MaterialPageRoute(
+        builder: (context) => const TaskList(),
       );
     case Pages.updateTask:
       final args = routeSettings.arguments as TaskModel;
