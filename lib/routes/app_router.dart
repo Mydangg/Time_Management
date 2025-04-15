@@ -3,6 +3,7 @@ import 'package:time_management/routes/pages.dart';
 import 'package:time_management/splash_screen.dart';
 import 'package:time_management/tasks/data/local/model/task_model.dart';
 import 'package:time_management/tasks/presentation/pages/new_task_screen.dart';
+import 'package:time_management/tasks/presentation/pages/task_details.dart';
 import 'package:time_management/tasks/presentation/pages/update_task_screen.dart';
 import 'package:time_management/tasks/presentation/widget/task_item_view.dart';
 
@@ -27,6 +28,11 @@ Route onGenerateRoute(RouteSettings routeSettings) {
     case Pages.list_task:
       return MaterialPageRoute(
         builder: (context) => const TaskList(),
+      );
+    case Pages.taskDetail:
+      final args = routeSettings.arguments as TaskModel;
+      return MaterialPageRoute(
+        builder: (context) => TaskDetails(taskModel: args),
       );
     case Pages.updateTask:
       final args = routeSettings.arguments as TaskModel;

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:time_management/components/widgets.dart';
 import 'package:time_management/tasks/data/local/model/task_model.dart';
+import 'package:time_management/tasks/presentation/pages/update_task_screen.dart';
 import 'package:time_management/utils/font_sizes.dart';
 
 import '../../../components/custom_app_bar.dart';
@@ -12,16 +13,16 @@ import '../../../utils/util.dart';
 import '../bloc/tasks_bloc.dart';
 import '../../../components/build_text_field.dart';
 
-class UpdateTaskScreen extends StatefulWidget {
+class TaskDetails extends StatefulWidget {
   final TaskModel taskModel;
 
-  const UpdateTaskScreen({super.key, required this.taskModel});
+  const TaskDetails({super.key, required this.taskModel});
 
   @override
-  State<UpdateTaskScreen> createState() => _UpdateTaskScreenState();
+  State<TaskDetails> createState() => _TaskDetails();
 }
 
-class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
+class _TaskDetails extends State<TaskDetails> {
 
   TextEditingController title = TextEditingController();
   TextEditingController description = TextEditingController();
@@ -100,7 +101,7 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
         child: Scaffold(
             backgroundColor: kWhiteColor,
             appBar: const CustomAppBar(
-              title: 'Update Task',
+              title: 'Task Details',
             ),
             body: GestureDetector(
                 behavior: HitTestBehavior.opaque,
@@ -109,62 +110,16 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
                     padding: const EdgeInsets.all(20),
                     child: BlocConsumer<TasksBloc, TasksState>(
                         listener: (context, state) {
-                      if (state is UpdateTaskFailure) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            getSnackBar(state.error, kRed));
-                      }
-                      if (state is UpdateTaskSuccess) {
-                        Navigator.pop(context);
-                      }
-                    }, builder: (context, state) {
+                          if (state is UpdateTaskFailure) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                getSnackBar(state.error, kRed));
+                          }
+                          if (state is UpdateTaskSuccess) {
+                            Navigator.pop(context);
+                          }
+                        }, builder: (context, state) {
                       return ListView(
                         children: [
-                          TableCalendar(
-                            calendarFormat: _calendarFormat,
-                            startingDayOfWeek: StartingDayOfWeek.monday,
-                            availableCalendarFormats: const {
-                              CalendarFormat.month: 'Month',
-                              CalendarFormat.week: 'Week',
-                            },
-                            rangeSelectionMode: RangeSelectionMode.toggledOn,
-                            focusedDay: _focusedDay,
-                            firstDay: DateTime.utc(2023, 1, 1),
-                            lastDay: DateTime.utc(2030, 1, 1),
-                            onPageChanged: (focusDay) {
-                              _focusedDay = focusDay;
-                            },
-                            selectedDayPredicate: (day) =>
-                                isSameDay(_selectedDay, day),
-                            rangeStartDay: _rangeStart,
-                            rangeEndDay: _rangeEnd,
-                            onFormatChanged: (format) {
-                              if (_calendarFormat != format) {
-                                setState(() {
-                                  _calendarFormat = format;
-                                });
-                              }
-                            },
-                            onRangeSelected: _onRangeSelected,
-                          ),
-                          const SizedBox(height: 20),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 20),
-                            decoration: BoxDecoration(
-                                color: kPrimaryColor.withOpacity(.1),
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(5))),
-                            child: buildText(
-                                _rangeStart != null && _rangeEnd != null
-                                    ? 'Task starting at ${formatDate(dateTime: _rangeStart.toString())} - ${formatDate(dateTime: _rangeEnd.toString())}'
-                                    : 'Select a date range',
-                                Colors.blue,
-                                textSmall,
-                                FontWeight.w400,
-                                TextAlign.start,
-                                TextOverflow.clip),
-                          ),
-                          const SizedBox(height: 20),
                           buildText(
                               'Title',
                               kBlackColor,
@@ -333,8 +288,6 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
                             ],
                           ),
 
-
-
                           buildText(
                               'Description',
                               kBlackColor,
@@ -355,48 +308,34 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
                           SizedBox(
                             width: size.width,
                             child: ElevatedButton(
+                                onPressed: (){
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => UpdateTaskScreen(taskModel: widget.taskModel),
+                                      )
+                                  );
+                                },
                                 style: ButtonStyle(
-                                  foregroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.white),
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.blue),
-                                  shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
+                                  foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                     RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          10), // Adjust the radius as needed
+                                      borderRadius: BorderRadius.circular(10),
                                     ),
                                   ),
                                 ),
-                                onPressed: () {
-                                  var taskModel = TaskModel(
-                                      id: widget.taskModel.id,
-                                      title: title.text,
-                                      description: description.text,
-                                      completed: widget.taskModel.completed,
-                                      priority: widget.taskModel.priority,
-                                      repeat: widget.taskModel.repeat,
-                                      createBy: widget.taskModel.createBy,
-                                      createById: widget.taskModel.createById,
-                                      startTime: _startTime == TimeOfDay(hour: 0, minute: 0) ? widget.taskModel.startTime : _startTime,
-                                      endTime: _endTime == TimeOfDay(hour: 0, minute: 0) ? widget.taskModel.endTime : _endTime,
-                                      startDateTime: _rangeStart,
-                                      stopDateTime: _rangeEnd);
-                                  context.read<TasksBloc>().add(
-                                      UpdateTaskEvent(taskModel: taskModel));
-                                },
                                 child: Padding(
-                                  padding: const EdgeInsets.all(15),
-                                  child: buildText(
-                                      'Update',
-                                      kWhiteColor,
-                                      textMedium,
-                                      FontWeight.w600,
-                                      TextAlign.center,
-                                      TextOverflow.clip),
-                                )),
+                                    padding: const EdgeInsets.all(15),
+                                    child: buildText(
+                                        'Edit Task',
+                                        kWhiteColor,
+                                        textMedium,
+                                        FontWeight.w600,
+                                        TextAlign.center,
+                                        TextOverflow.clip),
+                                )
+                            ),
                           ),
                         ],
                       );
