@@ -37,6 +37,10 @@ class _TaskItemViewState extends State<TaskItemView> {
                       completed: !widget.taskModel.completed,
                       priority: widget.taskModel.priority,
                       repeat: widget.taskModel.repeat,
+                      startTime: widget.taskModel.startTime,
+                      endTime: widget.taskModel.endTime,
+                      // startTime: _startTime == TimeOfDay(hour: 0, minute: 0) ? widget.taskModel.startTime : _startTime,
+                      // endTime: _endTime == TimeOfDay(hour: 0, minute: 0) ? widget.taskModel.endTime : _endTime,
                       createBy: widget.taskModel.createBy,
                       createById: widget.taskModel.createById,
                       startDateTime: widget.taskModel.startDateTime,
@@ -47,8 +51,7 @@ class _TaskItemViewState extends State<TaskItemView> {
             Expanded(
               child: GestureDetector(
                 onTap: (){
-                  // Navigator.pushReplacement(context, '/createNewTask');
-                  Navigator.pushReplacementNamed(context, '/createNewTask');
+                  Navigator.pushNamed(context, Pages.taskDetail, arguments: widget.taskModel);
                 },
                 child: Column(
                   crossAxisAlignment:
