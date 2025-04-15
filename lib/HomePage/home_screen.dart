@@ -313,7 +313,6 @@ class _TasksScreenState extends State<TasksScreen> {
                 elevation: 10,
                 color: Colors.white,
                 child: BottomNavigationBar(
-                  type: BottomNavigationBarType.fixed,
                   backgroundColor: Colors.white,
                   elevation: 0,
                   currentIndex: selectedIndex,
@@ -322,7 +321,7 @@ class _TasksScreenState extends State<TasksScreen> {
                   unselectedItemColor: Colors.blue[200],
                   items: const [
                     BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Trang chủ'),
-                    BottomNavigationBarItem(icon: Icon(Icons.task), label: 'Nhiệm vụ'),
+                    BottomNavigationBarItem(icon: Icon(Icons.calendar_month), label: 'Lịch'),
                     BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Cá nhân'),
                     BottomNavigationBarItem(icon: Icon(Icons.chat_bubble), label: 'AI Chat'),
                   ],

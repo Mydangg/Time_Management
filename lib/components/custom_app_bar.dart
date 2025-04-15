@@ -26,7 +26,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       automaticallyImplyLeading: false,
       elevation: 0,
       leading: showBackArrow ? IconButton(
-        icon: Icon(Icons.logout),
+        icon: onBackTap != null
+            ? Icon(Icons.logout)
+            : Icon(Icons.arrow_back),
         onPressed: () {
           if (onBackTap != null) {
             onBackTap!();
