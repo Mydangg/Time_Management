@@ -9,6 +9,8 @@ import 'package:time_management/components/build_text_field.dart';
 import 'package:time_management/tasks/presentation/widget/task_item_view.dart';
 import 'package:time_management/utils/color_palette.dart';
 import 'package:time_management/utils/util.dart';
+import 'package:time_management/Login_Signup/Screen/login.dart';
+import 'package:time_management/Login_with_Google/google_auth.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -16,6 +18,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../components/widgets.dart';
 import '../../../routes/pages.dart';
 import '../../../utils/font_sizes.dart';
+
 
 class TasksScreen extends StatefulWidget {
   const TasksScreen({super.key});
@@ -26,6 +29,7 @@ class TasksScreen extends StatefulWidget {
 
 class _TasksScreenState extends State<TasksScreen> {
   TextEditingController searchController = TextEditingController();
+  int selectedIndex = 0;
 
   @override
   void initState() {
@@ -47,6 +51,68 @@ class _TasksScreenState extends State<TasksScreen> {
     }
   }
 
+  //Hàm chuyển trang
+  void _onItemTapped(int index) {
+    setState(() {
+      selectedIndex = index;
+    });
+
+    //Đây là cái để chuyển trang
+    switch (index) {
+        case 0:
+          Navigator.push(context, MaterialPageRoute(builder: (_) => const TasksScreen()));
+          break;
+    //     case 1:
+    //       Navigator.push(context, MaterialPageRoute(builder: (_) => const Page2()));
+    //       break;
+    //     case 2:
+    //       Navigator.push(context, MaterialPageRoute(builder: (_) => const Page3()));
+    //       break;
+    //     case 3:
+    //       Navigator.push(context, MaterialPageRoute(builder: (_) => const Page4()));
+    //       break
+    }
+  }
+
+  //Thông báo xác nhận
+  void _showLogoutDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Xác nhận"),
+        content: const Text("Bạn có chắc muốn đăng xuất không?"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context), // Huỷ
+            child: const Text("Huỷ"),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context); // Đóng dialog
+              _logout(); // Xử lý logout
+            },
+            child: const Text("Đăng xuất"),
+          ),
+        ],
+      ),
+    );
+  }
+
+
+  //Hàm logout
+  // xử lý đăng xuất ở đây (xoá token, điều hướng về login...)
+  void _logout() async {
+    await FirebaseAuth.instance.signOut();
+    // await FirebaseServices().googleSignOut();
+    // await AuthServices().signOut();
+
+    //Điều hướng về login
+    Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (context) => const LoginScreen()
+    )); // điều hướng
+  }
+
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -56,10 +122,13 @@ class _TasksScreenState extends State<TasksScreen> {
         ),
         child: ScaffoldMessenger(
             child: Scaffold(
-              backgroundColor: kWhiteColor,
+              backgroundColor: Colors.white,
               appBar: CustomAppBar(
-                title: 'Hi ${username ?? ''}',
-                showBackArrow: false,
+                title: 'Xin chào ${username ?? ''} !',
+                showBackArrow: true,
+                onBackTap: () async {
+                  _showLogoutDialog();
+                },
                 actionWidgets: [
                   Padding(
                     padding: const EdgeInsets.only(right: 16.0), // Đảm bảo có khoảng cách hợp lý
@@ -239,6 +308,26 @@ class _TasksScreenState extends State<TasksScreen> {
                   onPressed: () {
                     Navigator.pushNamed(context, Pages.createNewTask);
                   }),
+
+              bottomNavigationBar: Material(
+                elevation: 10,
+                color: Colors.white,
+                child: BottomNavigationBar(
+                  type: BottomNavigationBarType.fixed,
+                  backgroundColor: Colors.white,
+                  elevation: 0,
+                  currentIndex: selectedIndex,
+                  onTap: _onItemTapped, //Gọi hàm để chuyển trang
+                  selectedItemColor: Colors.blue[800],
+                  unselectedItemColor: Colors.blue[200],
+                  items: const [
+                    BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Trang chủ'),
+                    BottomNavigationBarItem(icon: Icon(Icons.task), label: 'Nhiệm vụ'),
+                    BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Cá nhân'),
+                    BottomNavigationBarItem(icon: Icon(Icons.chat_bubble), label: 'AI Chat'),
+                  ],
+                ),
+              ),
             )));
   }
 }
