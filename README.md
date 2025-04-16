@@ -20,5 +20,7 @@ This app allow users to:
 | 1  | Register, Login, Forgot Password    | MyDang  |
 | 2  | Design Homepage, Calendar interface | MinhMan |
 | 3  | Crud time management                | TuLy    |
-| 4  | Search, filter                      | TuLy    |
+| 4  | Search, filter, state task          | TuLy    |
+
+
 
