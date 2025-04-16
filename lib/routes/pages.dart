@@ -4,4 +4,5 @@ class Pages {
   static const list_task = '/list_task';
   static const createNewTask = '/createNewTask';
   static const updateTask = '/updateNewTask';
+  static const schedule = '/schedule';
 }

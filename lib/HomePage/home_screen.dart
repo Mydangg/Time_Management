@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:time_management/components/custom_app_bar.dart';
+import 'package:time_management/schedule/alarm_notification.dart';
 import 'package:time_management/tasks/presentation/bloc/tasks_bloc.dart';
 import 'package:time_management/components/build_text_field.dart';
 import 'package:time_management/tasks/presentation/widget/task_item_view.dart';
@@ -18,6 +19,7 @@ import '../../../routes/pages.dart';
 import '../../../utils/font_sizes.dart';
 
 class TasksScreen extends StatefulWidget {
+
   const TasksScreen({super.key});
 
   @override
@@ -25,6 +27,7 @@ class TasksScreen extends StatefulWidget {
 }
 
 class _TasksScreenState extends State<TasksScreen> {
+  late AlarmNotification_Service alarmNotification = AlarmNotification_Service();
   TextEditingController searchController = TextEditingController();
 
   @override
@@ -231,14 +234,31 @@ class _TasksScreenState extends State<TasksScreen> {
                         }
                         return Container();
                       }))),
-              floatingActionButton: FloatingActionButton(
-                  child: const Icon(
-                    Icons.add_circle,
-                    color: Colors.blue,
-                  ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, Pages.createNewTask);
-                  }),
-            )));
+                floatingActionButton: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      FloatingActionButton(
+                        heroTag: 'btn',
+                        onPressed: () {
+                          alarmNotification.setAlarm();
+                        },
+                        child: Icon(Icons.add_circle, color: Colors.white),
+                        backgroundColor: Colors.blue,
+                      ),
+                      SizedBox(width: 10),
+                      FloatingActionButton(
+                        heroTag: 'btn2',
+                        onPressed: () {
+                          Navigator.pushNamed(context, Pages.schedule);
+                        },
+                        child: Icon(Icons.calendar_today, color: Colors.white),
+                        backgroundColor: Colors.blue,
+                      ),
+                    ],
+                ),
+          )
+    )
+    );
   }
 }

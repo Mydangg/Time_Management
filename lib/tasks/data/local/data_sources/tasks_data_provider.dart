@@ -1,9 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:time_management/schedule/alarm_notification.dart';
+import 'package:time_management/schedule/notifaication_schedular.dart';
 import 'package:time_management/tasks/data/local/model/task_model.dart';
 import 'package:time_management/utils/exception_handler.dart';
 
 class TaskDataProvider {
+  // late NotificationService notificationService = NotificationService();
+  late AlarmNotification_Service alarmNotification = AlarmNotification_Service();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   List<TaskModel> tasks = [];
 
@@ -88,6 +92,13 @@ class TaskDataProvider {
         final docRef = await _firestore.collection('tasks').add(taskJson);
         taskModel.id = docRef.id;
         tasks.add(taskModel);
+
+        alarmNotification.setAlarm();
+        // var task = taskModel.startDateTime!;
+        // print(taskModel.startTime!.hour);
+        // DateTime startTime = DateTime(task.year,task.month,task.day,taskModel.startTime!.hour, taskModel.startTime!.minute);
+        //
+        // notificationService.showNotification(startTime, taskModel.title, taskModel.createBy);
       }
 
     } catch (exception) {
