@@ -7,7 +7,9 @@ import 'package:time_management/tasks/presentation/pages/task_details.dart';
 import 'package:time_management/tasks/presentation/pages/update_task_screen.dart';
 import 'package:time_management/tasks/presentation/widget/task_item_view.dart';
 
+import '../HomePage/home_screen.dart';
 import '../page_not_found.dart';
+import '../tasks/presentation/pages/Schedular/schedular_screen.dart';
 import '../tasks/presentation/pages/task_list.dart';
 
 
@@ -17,10 +19,10 @@ Route onGenerateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         builder: (context) => const SplashScreen(),
       );
-    // case Pages.home:
-    //   return MaterialPageRoute(
-    //     builder: (context) => const TasksScreen(),
-    //   );
+    case Pages.home:
+      return MaterialPageRoute(
+        builder: (context) => const TasksScreen(),
+      );
     case Pages.createNewTask:
       return MaterialPageRoute(
         builder: (context) => const NewTaskScreen(),
@@ -39,6 +41,11 @@ Route onGenerateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         builder: (context) => UpdateTaskScreen(taskModel: args),
       );
+    case Pages.schedule:
+      return MaterialPageRoute(
+        builder: (context) => const Schedular(),
+      );
+
     default:
       return MaterialPageRoute(
         builder: (context) => const PageNotFound(),

@@ -1,9 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:time_management/schedule/alarm_notification.dart';
+import 'package:time_management/schedule/notifaication_schedular.dart';
 import 'package:time_management/tasks/data/local/model/task_model.dart';
 import 'package:time_management/utils/exception_handler.dart';
 
+import '../../../../schedule/alarm_notification.dart';
+
 class TaskDataProvider {
+  // late NotificationService notificationService = NotificationService();
+  late AlarmNotification_Service alarmNotification = AlarmNotification_Service();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   List<TaskModel> tasks = [];
 
@@ -74,7 +80,7 @@ class TaskDataProvider {
 
   Future<void> createTask(TaskModel taskModel) async {
     try {
-
+      final List<TaskModel> alarmListTask = [];
       final user = FirebaseAuth.instance.currentUser;
       if(user != null)
       {
@@ -88,6 +94,12 @@ class TaskDataProvider {
         final docRef = await _firestore.collection('tasks').add(taskJson);
         taskModel.id = docRef.id;
         tasks.add(taskModel);
+        alarmListTask.add(taskModel);
+
+        if(docRef.id.isNotEmpty){
+          alarmNotification.setAlarm(alarmListTask);
+        }
+
       }
 
     } catch (exception) {
@@ -100,12 +112,17 @@ class TaskDataProvider {
 
 
   Future<List<TaskModel>> updateTask(TaskModel taskModel) async {
+    final List<TaskModel> alarmListTask = [];
     try {
       await _firestore.collection('tasks').doc(taskModel.id).update(taskModel.toJson());
       final taskIndex = tasks.indexWhere((element) => element.id == taskModel.id);
       if (taskIndex != -1) {
         tasks[taskIndex] = taskModel;
+        alarmListTask.add(taskModel);
       }
+
+      alarmNotification.updateAlarm(alarmListTask);
+
       return tasks;
     } catch (exception) {
       throw Exception(handleException(exception));
@@ -116,6 +133,8 @@ class TaskDataProvider {
     try {
       await _firestore.collection('tasks').doc(taskModel.id).delete();
       tasks.remove(taskModel);
+
+      alarmNotification.cancelAlarm(taskModel.id);
       return tasks;
     } catch (exception) {
       throw Exception(handleException(exception));
