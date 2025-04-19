@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:time_management/components/widgets.dart';
+import 'package:time_management/routes/pages.dart';
 import 'package:time_management/services/firestore.dart';
 import 'package:time_management/tasks/data/local/model/task_model.dart';
 import 'package:time_management/utils/font_sizes.dart';
@@ -98,7 +99,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                             getSnackBar(state.error, kRed));
                       }
                       if (state is AddTasksSuccess) {
-                        Navigator.pushReplacementNamed(context, '/list_task');
+                        Navigator.pushReplacementNamed(context, '/home');
                         // Navigator.pop(context);
                       }
 
@@ -255,7 +256,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                                                 _selectedRepeat= 'Daily';
                                               }
                                             else
-                                              _selectedRepeat= 'Wekkly';
+                                              _selectedRepeat= 'Weekly';
                                           });
                                         },
                                         itemBuilder: (BuildContext context) => [

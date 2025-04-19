@@ -19,6 +19,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../components/widgets.dart';
 import '../../../routes/pages.dart';
 import '../../../utils/font_sizes.dart';
+import '../tasks/presentation/pages/Schedular/schedular_screen.dart';
 
 class TasksScreen extends StatefulWidget {
   const TasksScreen({super.key});
@@ -69,6 +70,12 @@ class _TasksScreenState extends State<TasksScreen> {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (_) => const TasksScreen()),
+        );
+        break;
+      case 1:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const Schedular()),
         );
         break;
       //     case 1:

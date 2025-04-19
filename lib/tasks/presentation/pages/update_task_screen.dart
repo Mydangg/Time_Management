@@ -268,7 +268,7 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
                                               _selectedRepeat= 'Daily';
                                             }
                                             else
-                                              _selectedRepeat= 'Wekkly';
+                                              _selectedRepeat= 'Weekly';
                                           });
                                         },
                                         itemBuilder: (BuildContext context) => [
@@ -376,8 +376,8 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
                                       title: title.text,
                                       description: description.text,
                                       completed: widget.taskModel.completed,
-                                      priority: widget.taskModel.priority,
-                                      repeat: widget.taskModel.repeat,
+                                      priority: _selectedPriority,
+                                      repeat: _selectedRepeat,
                                       createBy: widget.taskModel.createBy,
                                       createById: widget.taskModel.createById,
                                       startTime: _startTime == TimeOfDay(hour: 0, minute: 0) ? widget.taskModel.startTime : _startTime,

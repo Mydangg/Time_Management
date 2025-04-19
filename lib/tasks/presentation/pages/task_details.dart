@@ -223,7 +223,7 @@ class _TaskDetails extends State<TaskDetails> {
                                               _selectedRepeat= 'Daily';
                                             }
                                             else
-                                              _selectedRepeat= 'Wekkly';
+                                              _selectedRepeat= 'Weekly';
                                           });
                                         },
                                         itemBuilder: (BuildContext context) => [

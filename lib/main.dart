@@ -30,14 +30,14 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 Future<void> main() async {
   // Thông Báo
   WidgetsFlutterBinding.ensureInitialized();
+  Bloc.observer = BlocStateOberver();
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   tz.initializeTimeZones();
   await NotificationService().initialize();
   await AndroidAlarmManager.initialize();
   await AlarmNotification_Service().initializeNotifications();
-
-  Bloc.observer = BlocStateOberver();
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(MyApp(preferences: preferences));
 }
