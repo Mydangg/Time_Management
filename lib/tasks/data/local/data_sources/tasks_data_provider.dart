@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:time_management/schedule/alarm_notification.dart';
-import 'package:time_management/schedule/notifaication_schedular.dart';
 import 'package:time_management/tasks/data/local/model/task_model.dart';
 import 'package:time_management/utils/exception_handler.dart';
 
