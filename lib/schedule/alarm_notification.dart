@@ -22,12 +22,12 @@ class AlarmNotification_Service {
   final TaskDataProvider taskData = TaskDataProvider();
   final AlarmDataProvider alarmData = AlarmDataProvider();
 
-  static final AlarmNotification_Service _instance =
-  AlarmNotification_Service._internal();
-
-  factory AlarmNotification_Service() => _instance;
-
-  AlarmNotification_Service._internal();
+  // static final AlarmNotification_Service _instance =
+  // AlarmNotification_Service._internal();
+  //
+  // factory AlarmNotification_Service() => _instance;
+  //
+  // AlarmNotification_Service._internal();
 
   void onSelectNotification(NotificationResponse response) {
     // Xử lý khi người dùng nhấn vào thông báo
@@ -172,10 +172,13 @@ class AlarmNotification_Service {
 }
 
 @pragma('vm:entry-point')
-void alarmCallback() async {
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
+void alarmCallback() {
+  // Bắt buộc phải gọi async xử lý từ hàm sync
+  WidgetsFlutterBinding.ensureInitialized();
+  _handleAlarmAsync();
+}
 
+Future<void> _handleAlarmAsync() async {
   const AndroidInitializationSettings initializationSettingsAndroid =
   AndroidInitializationSettings('@mipmap/ic_launcher');
 
@@ -188,12 +191,11 @@ void alarmCallback() async {
   await flutterLocalNotificationsPlugin.show(
     0,
     '⏰ Báo thức!',
-    'Đã tới giờ thực hiện nhiệm vụ rồi',
+    'Đã đến giờ thực hiện công việc!',
     const NotificationDetails(
       android: AndroidNotificationDetails(
-        'alarm_notif',
-        'Alarm Notifications',
-        channelDescription: 'Thông báo báo thức',
+        'alarm_channel',
+        'Báo thức',
         importance: Importance.max,
         priority: Priority.high,
         ticker: 'ticker',
@@ -201,7 +203,7 @@ void alarmCallback() async {
         playSound: true,
         enableLights: true,
         color: Colors.red,
-        timeoutAfter: 6000, // ⏱️ Tự động tắt sau 60s
+        timeoutAfter: 6000,
       ),
     ),
     payload: 'alarm',
