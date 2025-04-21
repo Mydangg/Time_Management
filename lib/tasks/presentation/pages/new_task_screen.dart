@@ -255,7 +255,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                                                 _selectedRepeat= 'Daily';
                                               }
                                             else
-                                              _selectedRepeat= 'Wekkly';
+                                              _selectedRepeat= 'Weekly';
                                           });
                                         },
                                         itemBuilder: (BuildContext context) => [
