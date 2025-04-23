@@ -24,10 +24,10 @@ This app allow users to:
 | 2  | Design Homepage, Calendar interface | MinhMan   |
 | 3  | Crud time management                | TuLy      |
 | 4  | Search, filter, state task          | TuLy      |
-| 4  | Profile page                        | ThuyLinh  |
-| 4  | Schedule notification               | DaoKhuyen |
-| 4  | Dashboard page                      | TuLy      |
-| 4  | Chatbot AI                          | MyDang    |
+| 5  | Profile page                        | ThuyLinh  |
+| 6  | Schedule notification               | DaoKhuyen |
+| 7  | Dashboard page                      | TuLy      |
+| 8  | Chatbot AI                          | MyDang    |
 
 
 
