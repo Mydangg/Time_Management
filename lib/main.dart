@@ -16,6 +16,7 @@ import 'package:time_management/tasks/data/local/data_sources/tasks_data_provide
 import 'package:time_management/tasks/data/repository/task_repository.dart';
 import 'package:time_management/tasks/presentation/bloc/tasks_bloc.dart';
 import 'package:time_management/utils/color_palette.dart';
+import 'package:time_management/tasks/presentation/pages/Dashboard/dashboard_screen.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 import 'bloc_state_observer.dart';
@@ -31,7 +32,6 @@ Future<void> main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   tz.initializeTimeZones();
-  WidgetsFlutterBinding.ensureInitialized();
 
   // Kiểm tra nếu không phải là Web và chạy trên Android mới sử dụng AndroidAlarmManager
   if (!kIsWeb && Platform.isAndroid) {
