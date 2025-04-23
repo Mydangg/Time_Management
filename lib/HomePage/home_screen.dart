@@ -19,6 +19,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../components/widgets.dart';
 import '../../../routes/pages.dart';
 import '../../../utils/font_sizes.dart';
+import '../tasks/presentation/pages/Dashboard/dashboard_screen.dart';
 import '../tasks/presentation/pages/Schedular/schedular_screen.dart';
 
 class TasksScreen extends StatefulWidget {
@@ -38,6 +39,7 @@ class _TasksScreenState extends State<TasksScreen> {
   void initState() {
     context.read<TasksBloc>().add(FetchTaskEvent());
     _loadUserName();
+
     context.read<TasksBloc>().add(FetchTaskEvent());
     super.initState();
   }
@@ -84,9 +86,11 @@ class _TasksScreenState extends State<TasksScreen> {
       //     case 2:
       //       Navigator.push(context, MaterialPageRoute(builder: (_) => const Page3()));
       //       break;
-      //     case 3:
-      //       Navigator.push(context, MaterialPageRoute(builder: (_) => const Page4()));
-      //       break
+      case 3:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const DashboardScreen()),
+        );
     }
   }
 
@@ -137,7 +141,7 @@ class _TasksScreenState extends State<TasksScreen> {
         child: Scaffold(
           backgroundColor: Colors.white,
           appBar: CustomAppBar(
-            title: 'Xin chào ${username ?? ''} !',
+            title: 'Hi ${username ?? ''} !',
             showBackArrow: true,
             onBackTap: () async {
               _showLogoutDialog();
@@ -371,15 +375,19 @@ class _TasksScreenState extends State<TasksScreen> {
               items: const [
                 BottomNavigationBarItem(
                   icon: Icon(Icons.home),
-                  label: 'Trang chủ',
+                  label: 'Home',
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.calendar_month),
-                  label: 'Lịch',
+                  label: 'Schedule',
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.person),
-                  label: 'Cá nhân',
+                  label: 'Profile',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.dashboard),
+                  label: 'Dashboard',
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.chat_bubble),

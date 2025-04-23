@@ -10,17 +10,26 @@ This app allow users to:
 - View calendar and add, edit, delete schedules/tasks
 - Receive reminder notifications when it's time for a task
 - Display task priority levels
+- Display work statistics
+- Read, Edit, Update profile
+- Chatbot 
 
 [//]: # (- Show task completion status)
 
 [//]: # (- Provide schedule statistics)
 
-| ID | Task                                | Members |
-|----|-------------------------------------|---------|
-| 1  | Register, Login, Forgot Password    | MyDang  |
-| 2  | Design Homepage, Calendar interface | MinhMan |
-| 3  | Crud time management                | TuLy    |
-| 4  | Search, filter, state task          | TuLy    |
+| ID | Task                                | Members   |
+|----|-------------------------------------|-----------|
+| 1  | Register, Login, Forgot Password    | MyDang    |
+| 2  | Design Homepage, Calendar interface | MinhMan   |
+| 3  | Crud time management                | TuLy      |
+| 4  | Search, filter, state task          | TuLy      |
+| 4  | Profile page                        | ThuyLinh  |
+| 4  | Schedule notification               | DaoKhuyen |
+| 4  | Dashboard page                      | TuLy      |
+| 4  | Chatbot AI                          | MyDang    |
+
+
 
 
 
