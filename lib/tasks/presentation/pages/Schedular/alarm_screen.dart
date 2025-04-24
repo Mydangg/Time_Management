@@ -86,14 +86,14 @@ class _AlarmScreenState extends State<AlarmScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Color(0xFFF0FFFF),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               '⏰ Báo thức!',
-              style: TextStyle(fontSize: 40, color: Colors.white),
+              style: TextStyle(fontSize: 40, color: Colors.black),
             ),
             const SizedBox(height: 20),
             ElevatedButton(

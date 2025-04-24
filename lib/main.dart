@@ -33,23 +33,21 @@ import 'bloc_state_observer.dart';
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
-  // Thông Báo
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = BlocStateOberver();
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await EasyLocalization.ensureInitialized();
 
   tz.initializeTimeZones();
+  WidgetsFlutterBinding.ensureInitialized();
 
   // Kiểm tra nếu không phải là Web và chạy trên Android mới sử dụng AndroidAlarmManager
   if (!kIsWeb && Platform.isAndroid) {
     await AndroidAlarmManager.initialize();
     await AlarmNotification_Service().initializeNotifications();
   }
-  SharedPreferences preferences = await SharedPreferences.getInstance();
 
-  await EasyLocalization.ensureInitialized();
-     await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform, // Sử dụng cấu hình Firebase
-  );
   // che do xoay man hinh
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp, // Chế độ dọc
@@ -92,6 +90,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
+    final isDark = themeProvider.isDarkMode;
 
     return RepositoryProvider(
       create: (context) => TaskRepository(taskDataProvider: TaskDataProvider()),
@@ -104,9 +103,9 @@ class _MyAppState extends State<MyApp> {
           theme: ThemeData.light(), // Chủ đề sáng
           darkTheme: ThemeData.dark(), // Chủ đề tối
           themeMode:
-              themeProvider.isDarkMode
-                  ? ThemeMode.dark
-                  : ThemeMode.light, // Áp dụng chế độ sáng/tối
+          themeProvider.isDarkMode
+              ? ThemeMode.dark
+              : ThemeMode.light, // Áp dụng chế độ sáng/tối
           localizationsDelegates: context.localizationDelegates,
           supportedLocales: context.supportedLocales,
           locale: context.locale,
@@ -115,9 +114,7 @@ class _MyAppState extends State<MyApp> {
             '/': (context) => const AuthWrapper(), // Trang ban đầu
             '/home': (context) => const TasksScreen(), // Trang chính
             '/Schedular': (context) => const Schedular(), // Trang lịch
-            // '/chat': (context) => const ChatScreen(),
-          //  '/Schedular': (context) => const Schedular(),
-           '/DashboardScreen': (context) => const DashboardScreen(),
+            '/DashboardScreen': (context) => const DashboardScreen(),
             '/login': (context) => const LoginScreen(), // Trang đăng nhập
           },
         ),

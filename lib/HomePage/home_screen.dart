@@ -22,6 +22,7 @@ import '../../../routes/pages.dart';
 import '../../../utils/font_sizes.dart';
 import '../tasks/presentation/pages/Dashboard/dashboard_screen.dart';
 import '../tasks/presentation/pages/Schedular/schedular_screen.dart';
+import 'Dialog_out.dart';
 
 class TasksScreen extends StatefulWidget {
   const TasksScreen({super.key});
@@ -97,24 +98,24 @@ class _TasksScreenState extends State<TasksScreen> {
   }
 
   //Thông báo xác nhận
-  void _showLogoutDialog() {
+  void _showLogoutDialog2() {
     showDialog(
       context: context,
       builder:
           (context) => AlertDialog(
-            title: const Text("Xác nhận"),
-            content: const Text("Bạn có chắc muốn đăng xuất không?"),
+            title: const Text("Confirm"),
+            content: const Text("Are you sure you want to log out??"),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context), // Huỷ
-                child: const Text("Huỷ"),
+                child: const Text("Cancel"),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context); // Đóng dialog
                   _logout(); // Xử lý logout
                 },
-                child: const Text("Đăng xuất"),
+                child: const Text("log out"),
               ),
             ],
           ),
@@ -146,7 +147,7 @@ class _TasksScreenState extends State<TasksScreen> {
             title: 'Hi ${username ?? ''} !',
             showBackArrow: true,
             onBackTap: () async {
-              _showLogoutDialog();
+              ShowDialogOut();
             },
             actionWidgets: [
               Padding(

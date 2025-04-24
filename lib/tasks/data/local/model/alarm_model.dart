@@ -9,10 +9,10 @@ class AlarmModel {
 
   // AlarmModel(this.createById, this.alarmId,this.tasksId,this.title);
   AlarmModel({
-      required this.createById,
-      required this.alarmId,
-      required this.tasksId,
-      required this.title
+    required this.createById,
+    required this.alarmId,
+    required this.tasksId,
+    required this.title
   });
 
   Map<String, dynamic> toJson() {
