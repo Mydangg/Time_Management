@@ -11,3 +11,5 @@ const Color kGrey3 = Color(0xffEFEFEF);
 const Color kPrimaryColor = Color(0xFF3F37C9);
 
 const Color kRed = Color(0xffC5292A);
+
+const Color red = Color(0xffC5292A);
