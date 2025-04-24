@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:time_management/components/custom_app_bar.dart';
+import 'package:time_management/proflie/profilePgae.dart';
 import 'package:time_management/schedule/alarm_notification.dart';
 import 'package:time_management/tasks/presentation/bloc/tasks_bloc.dart';
 import 'package:time_management/components/build_text_field.dart';
@@ -80,17 +81,18 @@ class _TasksScreenState extends State<TasksScreen> {
           MaterialPageRoute(builder: (_) => const Schedular()),
         );
         break;
-      //     case 1:
-      //       Navigator.push(context, MaterialPageRoute(builder: (_) => const Page2()));
-      //       break;
-      //     case 2:
-      //       Navigator.push(context, MaterialPageRoute(builder: (_) => const Page3()));
-      //       break;
-      case 3:
+      case 2:
         Navigator.push(
           context,
           MaterialPageRoute(builder: (_) => const DashboardScreen()),
         );
+      case 4:
+        Navigator.push(context, MaterialPageRoute(builder: (_) => const ProfilePage()));
+        break;
+      //     case 2:
+      //       Navigator.push(context, MaterialPageRoute(builder: (_) => const Page3()));
+      //       break;
+
     }
   }
 
@@ -381,10 +383,7 @@ class _TasksScreenState extends State<TasksScreen> {
                   icon: Icon(Icons.calendar_month),
                   label: 'Schedule',
                 ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.person),
-                  label: 'Profile',
-                ),
+               
                 BottomNavigationBarItem(
                   icon: Icon(Icons.dashboard),
                   label: 'Dashboard',
@@ -392,6 +391,10 @@ class _TasksScreenState extends State<TasksScreen> {
                 BottomNavigationBarItem(
                   icon: Icon(Icons.chat_bubble),
                   label: 'AI Chat',
+                ),
+                 BottomNavigationBarItem(
+                  icon: Icon(Icons.person),
+                  label: 'Profile',
                 ),
               ],
             ),
