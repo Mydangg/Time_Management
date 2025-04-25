@@ -95,7 +95,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Profile',
+          'Profile'.tr(),
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 15,
@@ -205,13 +205,11 @@ class _ProfilePageState extends State<ProfilePage> {
               const Divider(height: 40, thickness: 1.2),
               ListTile(
                 leading: Icon(
-                  isDark ? Icons.dark_mode : Icons.light_mode,
-                  color: isDark ? Colors.white : Colors.black,
+                  themeProvider.isDarkMode
+                      ? Icons.dark_mode
+                      : Icons.light_mode,
                 ),
-                title: Text(
-                  "Dark Mode".tr(),
-                  style: TextStyle(color: isDark ? Colors.white : Colors.black),
-                ),
+                title: Text("Dark Mode".tr()),
                 trailing: Switch(
                   value: themeProvider.isDarkMode,
                   onChanged: (value) => themeProvider.toggleTheme(),
@@ -288,6 +286,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 onTap: () {
                   context.setLocale(const Locale('vi', 'VN'));
                   Navigator.of(context).pop();
+                  print('Ngôn ngữ hiện tại: ${context.locale}');
                 },
               ),
             ],

@@ -58,8 +58,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
         statusBarColor: Colors.transparent,
       ),
       child: Scaffold(
-        backgroundColor: kWhiteColor,
-        appBar: const CustomAppBar(title: 'Dashboard'),
+        // backgroundColor: kWhiteColor,
+        appBar:AppBar(
+          title: Text(
+            'Dashboard',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+          ),
+          // backgroundColor: Color(0xFF2097F5),
+          // backgroundColor: Colors.white,
+          leading: IconButton(
+            onPressed: () {},
+            icon: IconButton(
+              onPressed: () async {
+                Navigator.pushReplacementNamed(context, '/home');
+              },
+              icon: const Icon(Icons.arrow_back),
+            ),
+          ),
+        ),
         body: GestureDetector(
           behavior: HitTestBehavior.translucent,
           onTap: () => FocusScope.of(context).unfocus(),

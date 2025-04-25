@@ -152,7 +152,9 @@ class _TasksScreenState extends State<TasksScreen> {
         child: Scaffold(
           // backgroundColor: Colors.white,
           appBar: CustomAppBar(
+            backgroundColor: isDark ? Colors.black : Colors.white ,
             title: 'Hi ${username ?? ''} !',
+            // titleColor: isDark ? Colors.black : Colors.white,
             showBackArrow: true,
             onBackTap: () async {
               setState(() {

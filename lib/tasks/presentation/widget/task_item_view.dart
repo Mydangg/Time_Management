@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../components/widgets.dart';
+import '../../../proflie/theme.dart';
 import '../../../routes/pages.dart';
 import '../../../utils/color_palette.dart';
 import '../../../utils/font_sizes.dart';
 import '../../../utils/util.dart';
 import '../../data/local/model/task_model.dart';
 import '../bloc/tasks_bloc.dart';
+import 'package:provider/provider.dart';
 
 class TaskItemView extends StatefulWidget {
   final TaskModel taskModel;
@@ -18,8 +20,12 @@ class TaskItemView extends StatefulWidget {
 }
 
 class _TaskItemViewState extends State<TaskItemView> {
+
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    final isDark = themeProvider.isDarkMode;
+
     return Container(
         margin: const EdgeInsets.only(bottom: 10),
         padding: const EdgeInsets.all(0),
@@ -62,7 +68,7 @@ class _TaskItemViewState extends State<TaskItemView> {
                       children: [
                         Expanded(child: buildText(
                             widget.taskModel.title,
-                            kBlackColor,
+                            isDark ? Colors.white : kBlackColor,
                             textMedium,
                             FontWeight.w500,
                             TextAlign.start,
@@ -151,7 +157,7 @@ class _TaskItemViewState extends State<TaskItemView> {
                     buildText(
                         widget.taskModel
                             .description,
-                        kGrey1,
+                        isDark ? Colors.white : Colors.black,
                         textSmall,
                         FontWeight.normal,
                         TextAlign.start,
@@ -165,12 +171,16 @@ class _TaskItemViewState extends State<TaskItemView> {
                         ),
                         child: Row(
                           children: [
-                            SvgPicture.asset('assets/svgs/calender.svg', width: 12,),
+                            SvgPicture.asset(
+                              'assets/svgs/calender.svg',
+                              width: 12,
+                              color: isDark ? Colors.white : Colors.black,
+                            ),
                             const SizedBox(width: 10,),
                             Expanded(child: buildText(
                                 '${formatDate(dateTime: widget.taskModel
                                     .startDateTime.toString())} - ${formatDate(dateTime: widget.taskModel
-                                    .stopDateTime.toString())}', kBlackColor, textTiny,
+                                    .stopDateTime.toString())}', isDark ? Colors.white : kBlackColor, textTiny,
                                 FontWeight.w400, TextAlign.start, TextOverflow.clip),)
                           ],
                         )

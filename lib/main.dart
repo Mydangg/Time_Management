@@ -40,9 +40,6 @@ Future<void> main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await EasyLocalization.ensureInitialized();
 
-  tz.initializeTimeZones();
-  WidgetsFlutterBinding.ensureInitialized();
-
   // Kiểm tra nếu không phải là Web và chạy trên Android mới sử dụng AndroidAlarmManager
   if (!kIsWeb && Platform.isAndroid) {
     await AndroidAlarmManager.initialize();

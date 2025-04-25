@@ -6,6 +6,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:time_management/proflie/theme.dart';
 
 class EditProfilePage extends StatefulWidget {
   final String uid;
@@ -59,6 +61,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   Future<void> _pickImage() async {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    final isDark = themeProvider.isDarkMode;
+
     final picker = ImagePicker();
     final picked = await picker.pickImage(source: ImageSource.gallery);
 
@@ -160,11 +165,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      // backgroundColor: Colors.grey[100],
       appBar: AppBar(
         title: const Text("Chỉnh sửa thông tin"),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black87,
+        // backgroundColor: Colors.white,
+        // foregroundColor: Colors.black87,
         elevation: 1,
         actions: [
           IconButton(
