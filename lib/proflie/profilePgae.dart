@@ -6,6 +6,8 @@ import 'package:time_management/proflie/editProflie.dart';
 import 'package:time_management/proflie/theme.dart';
 import 'package:provider/provider.dart';
 
+import '../HomePage/Dialog_out.dart';
+
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
@@ -22,6 +24,8 @@ class _ProfilePageState extends State<ProfilePage> {
   int totalTasks = 0;
   int completedTasks = 0;
   bool isLoading = true;
+
+  DialogService showDialogOut = DialogService();
 
   @override
   void initState() {
@@ -108,6 +112,25 @@ class _ProfilePageState extends State<ProfilePage> {
             color: isDark ? Colors.white : Colors.black,
           ),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () {
+              final user = FirebaseAuth.instance.currentUser;
+              if (user != null) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => EditProfilePage(uid: user.uid),
+                  ),
+                ).then((_) {
+                  _loadUserInfo();
+                  _loadTaskStats(); // reload lại stats sau khi chỉnh sửa
+                });
+              }
+            },
+          ),
+        ],
       ),
       backgroundColor: isDark ? Colors.black : Colors.white,
       body: isLoading
@@ -168,14 +191,14 @@ class _ProfilePageState extends State<ProfilePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   _buildStatCard(
-                    "total_tasks".tr(),
-                    totalTasks.toString(),
-                    Icons.list_alt
+                      "Total Tasks".tr(),
+                      totalTasks.toString(),
+                      Icons.list_alt
                   ),
                   _buildStatCard(
-                    "completed_tasks".tr(),
-                    completedTasks.toString(),
-                    Icons.check_circle
+                      "Completed Tasks".tr(),
+                      completedTasks.toString(),
+                      Icons.check_circle
                   ),
                 ],
               ),
@@ -186,7 +209,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   color: isDark ? Colors.white : Colors.black,
                 ),
                 title: Text(
-                  "dark_mode".tr(),
+                  "Dark Mode".tr(),
                   style: TextStyle(color: isDark ? Colors.white : Colors.black),
                 ),
                 trailing: Switch(
@@ -197,7 +220,7 @@ class _ProfilePageState extends State<ProfilePage> {
               const Divider(height: 40, thickness: 1.2),
               ListTile(
                 leading: const Icon(Icons.language, color: Colors.blue),
-                title: Text("language_settings".tr()),
+                title: Text("Language settings".tr()),
                 onTap: () {
                   _showLanguageDialog(context);
                 },
@@ -205,10 +228,9 @@ class _ProfilePageState extends State<ProfilePage> {
               const Divider(height: 40, thickness: 1.2),
               ListTile(
                 leading: const Icon(Icons.exit_to_app, color: Colors.red),
-                title: Text("logout".tr()),
+                title: Text("Logout".tr()),
                 onTap: () {
-                  FirebaseAuth.instance.signOut();
-                  Navigator.pushReplacementNamed(context, '/login');
+                  showDialogOut.showLogoutDialog(context);
                 },
               ),
             ],
@@ -250,7 +272,7 @@ class _ProfilePageState extends State<ProfilePage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("language_settings".tr()),
+          title: Text("Language Settings".tr()),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [

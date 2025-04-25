@@ -13,6 +13,8 @@ import 'package:time_management/utils/color_palette.dart';
 import 'package:time_management/utils/util.dart';
 import 'package:time_management/Login_Signup/Screen/login.dart';
 import 'package:time_management/Login_with_Google/google_auth.dart';
+import 'package:provider/provider.dart';
+
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -20,6 +22,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../components/widgets.dart';
 import '../../../routes/pages.dart';
 import '../../../utils/font_sizes.dart';
+import '../proflie/theme.dart';
 import '../tasks/presentation/pages/Dashboard/dashboard_screen.dart';
 import '../tasks/presentation/pages/Schedular/schedular_screen.dart';
 import 'Dialog_out.dart';
@@ -36,6 +39,8 @@ class _TasksScreenState extends State<TasksScreen> {
       AlarmNotification_Service();
   TextEditingController searchController = TextEditingController();
   int selectedIndex = 0;
+
+  DialogService showDialogOut = DialogService();
 
   @override
   void initState() {
@@ -98,7 +103,7 @@ class _TasksScreenState extends State<TasksScreen> {
   }
 
   //Thông báo xác nhận
-  void _showLogoutDialog2() {
+  void _showLogoutDialog() {
     showDialog(
       context: context,
       builder:
@@ -137,18 +142,25 @@ class _TasksScreenState extends State<TasksScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    final isDark = themeProvider.isDarkMode;
     var size = MediaQuery.of(context).size;
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
       child: ScaffoldMessenger(
         child: Scaffold(
-          backgroundColor: Colors.white,
+          // backgroundColor: Colors.white,
           appBar: CustomAppBar(
             title: 'Hi ${username ?? ''} !',
             showBackArrow: true,
             onBackTap: () async {
-              ShowDialogOut();
+              setState(() {
+                showDialogOut.showLogoutDialog(context);
+              });
             },
+            // titleColor: isDark ? Colors.white : Colors.black, // đúng tên biến
+            // backArrowColor: isDark ? Colors.white : Colors.black, // không có dấu ;
             actionWidgets: [
               Padding(
                 padding: const EdgeInsets.only(
@@ -369,7 +381,7 @@ class _TasksScreenState extends State<TasksScreen> {
             elevation: 10,
             color: Colors.white,
             child: BottomNavigationBar(
-              backgroundColor: Colors.white,
+              backgroundColor: isDark ? Colors.white : Colors.black, // Thêm màu cho back arrow (nếu cần)
               elevation: 0,
               currentIndex: selectedIndex,
               onTap: _onItemTapped, //Gọi hàm để chuyển trang

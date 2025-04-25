@@ -1,39 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class ShowDialogOut extends StatelessWidget {
-  const ShowDialogOut({super.key});
+import '../Login_Signup/Screen/login.dart';
 
-  void _logout() {
-    // TODO: Viết logic logout ở đây, ví dụ FirebaseAuth.instance.signOut()
-    print("Đã đăng xuất");
+class DialogService {
+  // Hiển thị dialog xác nhận logout
+  Future<void> showLogoutDialog(BuildContext context) async {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Confirm"),
+        content: const Text("Are you sure you want to log out?"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Cancel"),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context); // Đóng dialog
+              _logout(context);       // Gọi hàm logout
+            },
+            child: const Text("Log out"),
+          ),
+        ],
+      ),
+    );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text("Confirm"),
-            content: const Text("Are you sure you want to log out?"),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context), // Huỷ
-                child: const Text("Cancel"),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context); // Đóng dialog
-                  _logout(); // Xử lý logout
-                },
-                child: const Text("Log out"),
-              ),
-            ],
-          ),
-        );
-      },
-      child: const Text("Show Logout Dialog"),
+  // Hàm xử lý đăng xuất
+  void _logout(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
+
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
     );
   }
 }

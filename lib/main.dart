@@ -22,6 +22,7 @@ import 'package:time_management/tasks/data/local/data_sources/tasks_data_provide
 import 'package:time_management/tasks/data/repository/task_repository.dart';
 import 'package:time_management/tasks/presentation/bloc/tasks_bloc.dart';
 import 'package:time_management/tasks/presentation/pages/Schedular/schedular_screen.dart';
+import 'package:time_management/tasks/presentation/pages/new_task_screen.dart';
 import 'package:time_management/utils/color_palette.dart';
 import 'package:time_management/tasks/presentation/pages/Dashboard/dashboard_screen.dart';
 import 'package:timezone/data/latest.dart' as tz;
@@ -66,6 +67,7 @@ Future<void> main() async {
       ),
     ),
   );
+
 }
 
 class MyApp extends StatefulWidget {
@@ -100,45 +102,62 @@ class _MyAppState extends State<MyApp> {
           title: 'Task Manager',
           navigatorKey: navigatorKey,
           debugShowCheckedModeBanner: false,
-          theme: ThemeData.light(), // Chủ đề sáng
-          darkTheme: ThemeData.dark(), // Chủ đề tối
+          onGenerateRoute: onGenerateRoute,
+            theme: ThemeData(
+              brightness: Brightness.light,
+              scaffoldBackgroundColor: Colors.white,
+              primarySwatch: Colors.blue,
+            ).copyWith(
+              textTheme: ThemeData.light().textTheme.apply(
+                fontFamily: 'Sora',
+              ),
+            ),
+          // Chủ đề sáng
+          darkTheme: ThemeData.dark().copyWith(
+              textTheme: ThemeData.dark().textTheme.apply(
+                fontFamily: 'Sora',
+              ),
+          ),// Chủ đề tối
           themeMode:
-          themeProvider.isDarkMode
-              ? ThemeMode.dark
-              : ThemeMode.light, // Áp dụng chế độ sáng/tối
+          themeProvider.isDarkMode ? ThemeMode.dark : ThemeMode.light, // Áp dụng chế độ sáng/tối
           localizationsDelegates: context.localizationDelegates,
           supportedLocales: context.supportedLocales,
           locale: context.locale,
-          initialRoute: '/',
-          routes: {
-            '/': (context) => const AuthWrapper(), // Trang ban đầu
-            '/home': (context) => const TasksScreen(), // Trang chính
-            '/Schedular': (context) => const Schedular(), // Trang lịch
-            '/DashboardScreen': (context) => const DashboardScreen(),
-            '/login': (context) => const LoginScreen(), // Trang đăng nhập
-          },
+          home: StreamBuilder<User?>(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasData) {
+                return const SplashScreen(); // Đã đăng nhập
+              } else {
+                return const LoginScreen(); // Chưa đăng nhập
+              }
+            },
+          ),
         ),
+
       ),
     );
   }
 }
 
-class AuthWrapper extends StatelessWidget {
-  const AuthWrapper({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<User?>(
-      stream: FirebaseAuth.instance.authStateChanges(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasData) {
-          return const HomeScreen(); // Đã đăng nhập, chuyển đến trang chính
-        } else {
-          return const LoginScreen(); // Chưa đăng nhập, chuyển đến trang đăng nhập
-        }
-      },
-    );
-  }
-}
+// class AuthWrapper extends StatelessWidget {
+//   const AuthWrapper({super.key});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return StreamBuilder<User?>(
+//       stream: FirebaseAuth.instance.authStateChanges(),
+//       builder: (context, snapshot) {
+//         if (snapshot.connectionState == ConnectionState.waiting) {
+//           return const Center(child: CircularProgressIndicator());
+//         } else if (snapshot.hasData) {
+//           return const HomeScreen(); // Đã đăng nhập, chuyển đến trang chính
+//         } else {
+//           return const LoginScreen(); // Chưa đăng nhập, chuyển đến trang đăng nhập
+//         }
+//       },
+//     );
+//   }
+// }
