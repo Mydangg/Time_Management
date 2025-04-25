@@ -15,14 +15,14 @@ class _Schedular extends State<Schedular> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      // backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
           'TableCalendar - Events',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
         ),
         // backgroundColor: Color(0xFF2097F5),
-        backgroundColor: Colors.white,
+        // backgroundColor: Colors.white,
         leading: IconButton(
           onPressed: () {},
           icon: IconButton(
