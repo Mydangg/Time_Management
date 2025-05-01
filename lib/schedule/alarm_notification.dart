@@ -92,54 +92,58 @@ class AlarmNotification_Service {
       final List<TaskModel> taskList = entry.value;
 
       for (var taskModel in taskList) {
-        int alarmId = await alarmData.createAlarm(taskModel);
+        final DateTime alarmTime = DateTime(
+          taskModel.startDateTime!.year,
+          taskModel.startDateTime!.month,
+          taskModel.startDateTime!.day,
+          taskModel.startTime!.hour,
+          taskModel.startTime!.minute,
+        );
 
-        if (alarmId != 0) {
-          final DateTime alarmTime = DateTime(
-            taskModel.startDateTime!.year,
-            taskModel.startDateTime!.month,
-            taskModel.startDateTime!.day,
-            taskModel.startTime!.hour,
-            taskModel.startTime!.minute,
-          );
+        if(!taskModel.completed && alarmTime.isAfter(DateTime.now())){
+          int alarmId = await alarmData.createAlarm(taskModel);
 
-          switch (taskModel.repeat?.toLowerCase()) {
-            case 'Daily':
-              await AndroidAlarmManager.periodic(
-                const Duration(days: 1),
-                alarmId,
-                alarmCallback,
-                startAt: alarmTime,
-                exact: true,
-                wakeup: true,
-              );
-              break;
+          if (alarmId != 0) {
+            print(alarmTime);
 
-            case 'Weekly':
-              await AndroidAlarmManager.periodic(
-                const Duration(days: 7),
-                alarmId,
-                alarmCallback,
-                startAt: alarmTime,
-                exact: true,
-                wakeup: true,
-              );
-              break;
+            switch (taskModel.repeat?.toLowerCase()) {
+              case 'Daily':
+                await AndroidAlarmManager.periodic(
+                  const Duration(days: 1),
+                  alarmId,
+                  alarmCallback,
+                  startAt: alarmTime,
+                  exact: true,
+                  wakeup: true,
+                );
+                break;
 
-            case 'None':
-            default:
-              await AndroidAlarmManager.oneShotAt(
-                alarmTime,
-                alarmId,
-                alarmCallback,
-                exact: true,
-                wakeup: true,
-              );
-              break;
+              case 'Weekly':
+                await AndroidAlarmManager.periodic(
+                  const Duration(days: 7),
+                  alarmId,
+                  alarmCallback,
+                  startAt: alarmTime,
+                  exact: true,
+                  wakeup: true,
+                );
+                break;
+
+              case 'None':
+              default:
+                await AndroidAlarmManager.oneShotAt(
+                  alarmTime,
+                  alarmId,
+                  alarmCallback,
+                  exact: true,
+                  wakeup: true,
+                );
+                break;
+            }
+
+            print(
+                "Đã đặt báo thức cho task '${taskModel.title}' lúc $alarmTime với repeat: ${taskModel.repeat}");
           }
-
-          print(
-              "Đã đặt báo thức cho task '${taskModel.title}' lúc $alarmTime với repeat: ${taskModel.repeat}");
         }
       }
     }
@@ -160,7 +164,6 @@ class AlarmNotification_Service {
 
   Future<void> updateAlarm(List<TaskModel> taskModel) async {
     try {
-
       for(var task in taskModel){
         await cancelAlarm(task.id);
       }
