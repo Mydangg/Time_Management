@@ -14,6 +14,7 @@ class WakeUpNotification {
     IsolateNameServer.registerPortWithName(_alarmPort.sendPort, 'alarm_port');
 
     // Lắng nghe thông điệp từ port
+
     _alarmPort.listen((message) {
       if (message == 'show_alarm_screen') {
         // Đảm bảo navigatorKey không null và xử lý điều hướng
