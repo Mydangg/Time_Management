@@ -92,7 +92,7 @@ class _AlarmScreenState extends State<AlarmScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              '⏰ Báo thức!',
+              '⏰ Alarm!',
               style: TextStyle(fontSize: 40, color: Colors.black),
             ),
             const SizedBox(height: 20),
@@ -103,7 +103,7 @@ class _AlarmScreenState extends State<AlarmScreen> {
                 _cancelTimer();
                 Navigator.of(context).pop();
               },
-              child: const Text('Bỏ qua'),
+              child: const Text('Skip'),
               style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
             ),
           ],

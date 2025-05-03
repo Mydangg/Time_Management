@@ -62,7 +62,7 @@ class _SchedularItemView extends State<SchedularItemView> {
 
       return true;
     } catch (e) {
-      print("loi: ${e}");
+      print("Error: ${e}");
       return false;
     }
   }
@@ -261,7 +261,7 @@ class _SchedularItemView extends State<SchedularItemView> {
               if (value.isEmpty) {
                 return Center(
                   child: Text(
-                    'Không có lịch nào hết',
+                    'There is no schedule at all',
                     style: TextStyle(
                       color: Colors.grey, // Màu chữ xám nhẹ
                       fontSize: 14,

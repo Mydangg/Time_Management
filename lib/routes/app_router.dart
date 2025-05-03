@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:time_management/Chat/chat_history_screen.dart';
+import 'package:time_management/Chat/chatbox_screen.dart';
 import 'package:time_management/routes/pages.dart';
 import 'package:time_management/splash_screen.dart';
 import 'package:time_management/tasks/data/local/model/task_model.dart';
@@ -44,6 +46,15 @@ Route onGenerateRoute(RouteSettings routeSettings) {
     case Pages.schedule:
       return MaterialPageRoute(
         builder: (context) => const Schedular(),
+      );
+    case Pages.chatbot:
+      return MaterialPageRoute(
+        builder: (context) => const ChatBot_Screen(),
+      );
+
+    case Pages.chatHistory:
+      return MaterialPageRoute(
+        builder: (context) => const ChatHistoryScreen(),
       );
 
     default:

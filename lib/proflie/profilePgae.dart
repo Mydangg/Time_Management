@@ -282,11 +282,11 @@ class _ProfilePageState extends State<ProfilePage> {
                 },
               ),
               ListTile(
-                title: const Text("Tiếng Việt"),
+                title: const Text("Vietnamese"),
                 onTap: () {
                   context.setLocale(const Locale('vi', 'VN'));
                   Navigator.of(context).pop();
-                  print('Ngôn ngữ hiện tại: ${context.locale}');
+                  print('Present language: ${context.locale}');
                 },
               ),
             ],
