@@ -1,11 +1,11 @@
 {
-  "language_settings": "Language Settings",
-  "vietnamese": "Vietnamese",
-  "english": "English",
-  "dark_mode": "Dark Mode",
-  "logout": "Logout",
-  "total_tasks": "Total Tasks",
-  "completed_tasks": "Completed Tasks",
-  "profile_page": "Profile"
+  "Language Settings": "Language Settings",
+  "Vietnamese": "Vietnamese",
+  "English": "English",
+  "Dark Mode": "Dark Mode",
+  "Logout": "Logout",
+  "Total Tasks": "Total Tasks",
+  "Completed Tasks": "Completed Tasks",
+  "Profile": "Profile"
 
 }

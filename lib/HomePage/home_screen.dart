@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:time_management/Chat/chatbox_screen.dart';
 import 'package:time_management/components/custom_app_bar.dart';
 import 'package:time_management/proflie/profilePgae.dart';
 import 'package:time_management/schedule/alarm_notification.dart';
@@ -92,6 +93,9 @@ class _TasksScreenState extends State<TasksScreen> {
           context,
           MaterialPageRoute(builder: (_) => const DashboardScreen()),
         );
+      case 3:
+        Navigator.push(context, MaterialPageRoute(builder: (_) => const ChatBot_Screen()));
+        break;
       case 4:
         Navigator.push(context, MaterialPageRoute(builder: (_) => const ProfilePage()));
         break;
@@ -131,9 +135,6 @@ class _TasksScreenState extends State<TasksScreen> {
   // xử lý đăng xuất ở đây (xoá token, điều hướng về login...)
   void _logout() async {
     await FirebaseAuth.instance.signOut();
-    // await FirebaseServices().googleSignOut();
-    // await AuthServices().signOut();
-
     //Điều hướng về login
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (context) => const LoginScreen()),
@@ -158,7 +159,7 @@ class _TasksScreenState extends State<TasksScreen> {
             showBackArrow: true,
             onBackTap: () async {
               setState(() {
-                showDialogOut.showLogoutDialog(context);
+                _showLogoutDialog();
               });
             },
             // titleColor: isDark ? Colors.white : Colors.black, // đúng tên biến
@@ -404,7 +405,7 @@ class _TasksScreenState extends State<TasksScreen> {
                   label: 'Dashboard',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.chat_bubble),
+                  icon: Icon(Icons.smart_toy),
                   label: 'AI Chat',
                 ),
                  BottomNavigationBarItem(

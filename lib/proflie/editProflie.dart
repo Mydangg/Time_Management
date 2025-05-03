@@ -52,7 +52,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     } catch (e) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text("Lỗi khi tải dữ liệu: $e")));
+      ).showSnackBar(SnackBar(content: Text("Error Loading Data: $e")));
     }
 
     setState(() {
@@ -110,7 +110,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     } catch (e) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text("Lỗi upload ảnh: $e")));
+      ).showSnackBar(SnackBar(content: Text("Image Update Error: $e")));
       return null;
     }
   }
@@ -120,7 +120,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       if (_nameController.text.trim().isEmpty ||
           _emailController.text.trim().isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Vui lòng nhập đầy đủ thông tin")),
+          const SnackBar(content: Text("Please Enter Full Information")),
         );
         return;
       }
@@ -144,13 +144,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
       print('Photo URL saved to Firestore: $_photoUrl');
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(const SnackBar(content: Text("Cập nhật thành công!")));
+      ).showSnackBar(const SnackBar(content: Text("Updated Successfully!")));
 
       Navigator.pop(context); // Quay lại trang trước
     } catch (e) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text("Không thể lưu thông tin: $e")));
+      ).showSnackBar(SnackBar(content: Text("Update Failed: $e")));
     }
   }
 
@@ -167,7 +167,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return Scaffold(
       // backgroundColor: Colors.grey[100],
       appBar: AppBar(
-        title: const Text("Chỉnh sửa thông tin"),
+        title: const Text("Update Information"),
         // backgroundColor: Colors.white,
         // foregroundColor: Colors.black87,
         elevation: 1,
@@ -175,7 +175,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           IconButton(
             onPressed: _saveProfile,
             icon: const Icon(Icons.check),
-            tooltip: "Lưu",
+            tooltip: "Update",
           ),
         ],
       ),
@@ -235,24 +235,24 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       ),
                     ),
                     const SizedBox(height: 30),
-                    buildLabel("Tên"),
+                    buildLabel("Username"),
                     buildTextField(
                       _nameController,
-                      "Nhập tên của bạn",
+                      "Enter username",
                       Icons.person,
                     ),
                     const SizedBox(height: 20),
                     buildLabel("Email"),
                     buildTextField(
                       _emailController,
-                      "Nhập email của bạn",
+                      "Entern email",
                       Icons.email,
                     ),
                     const SizedBox(height: 20),
-                    buildLabel("Số điện thoại"),
+                    buildLabel("Phone Number"),
                     buildTextField(
                       _phoneController,
-                      "Nhập số điện thoại",
+                      "Enter phone number",
                       Icons.phone,
                       keyboardType: TextInputType.phone,
                     ),

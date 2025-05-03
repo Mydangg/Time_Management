@@ -6,4 +6,6 @@ class Pages {
   static const createNewTask = '/createNewTask';
   static const updateTask = '/updateNewTask';
   static const schedule = '/schedule';
+  static const chatbot = '/chatbot';
+  static const String chatHistory = '/chatHistory';
 }
